@@ -22,6 +22,7 @@
 
 module TopLevel(
     input clkin,
+    input clk,
     input btnU,
     input btnD,
     input btnL,
@@ -35,16 +36,20 @@ module TopLevel(
     output [3:0] vgaGreen,
     output [6:0] seg,
     output dp,
-    output [3:0] an
+    output [3:0] an,
+    output VBlank,
+    output HBlank
     );
     
-    wire clk, digsel, frame, qsec;
+    wire digsel, frame, qsec;
     wire secEdge, flashOutSlug, flashOutBorder;
     wire btnCenable, btnUDLRenable, TimerEnable, resetTimer, LossDetect, WinDetect, flashSlug, flashBorder;
     wire [9:0] Hcount, Vcount;
     wire [3:0] BlueIn, GreenIn, RedIn, selInput, segInput, HorizRedOut, VertRedOut, HorizRedIn, VertRedIn, secOut;
     wire [15:0] timerOut;
     wire [9:0] SecOutSlug;
+
+    assign digsel = 1;
     
     TopStateMachine TopStateMachine (.clk(clk), .btnUDLR(btnU | btnR | btnD | btnL), .btnC(btnC), .WinDetect(WinDetect), .LossDetect(LossDetect), .reset(resetTimer),
                                      .btnCenable(btnCenable), .btnUDLRenable(btnUDLRenable), .TimerEnable(TimerEnable), .flashSlug(flashSlug), .flashBorder(flashBorder));                                               
@@ -52,10 +57,10 @@ module TopLevel(
     LossDetector LossDetector (.Green(GreenIn), .Red(HorizRedOut | VertRedOut), .LossDetect(LossDetect));
     WinDetector WinDetector (.Green(GreenIn), .Hcount(Hcount), .Vcount(Vcount), .WinDetect(WinDetect));
     
-    lab7_clks not_so_slow (.clkin(clkin), .greset(sw[0]), .clk(clk), .digsel(digsel));
+    //lab7_clks not_so_slow (.clkin(clkin), .greset(sw[0]), .clk(clk), .digsel(digsel));
     
     VGAController VGAController(.clk(clk), .RedIn(HorizRedOut | VertRedOut), .BlueIn({(BlueIn[3] & ~flashOutBorder),(BlueIn[2] & ~flashOutBorder), (BlueIn[1] & ~flashOutBorder), (BlueIn[0] & ~flashOutBorder)}), .GreenIn({(GreenIn[3] & ~flashOutSlug),(GreenIn[2] & ~flashOutSlug), (GreenIn[1] & ~flashOutSlug), (GreenIn[0] & ~flashOutSlug)}), .Hsync(Hsync), .Vsync(Vsync),
-                   .vgaRed(vgaRed), .vgaBlue(vgaBlue), .vgaGreen(vgaGreen), .Hcount(Hcount), .Vcount(Vcount), .frame(frame));
+                   .vgaRed(vgaRed), .vgaBlue(vgaBlue), .vgaGreen(vgaGreen), .VBlank(VBlank), .HBlank(HBlank), .Hcount(Hcount), .Vcount(Vcount), .frame(frame));
                    
     BorderGenerator BorderGenerator (.Hcount(Hcount), .Vcount(Vcount), .Blue({BlueIn[3:0]}), .flash(flashBorder), .sec(~qsec));
     
@@ -93,4 +98,21 @@ module TopLevel(
  assign an[0] =(~selInput[0]) ;
  assign dp =  (~selInput[2]);
                    
+endmodule
+
+module FDRE(
+    input R, CE, D, C, 
+    output reg Q
+);
+
+    parameter INIT = 0;
+    initial begin
+        Q <= INIT;
+    end
+
+    always @(posedge C)
+        if(R)
+            Q <= 0;
+        else if(CE)
+            Q <= D;
 endmodule

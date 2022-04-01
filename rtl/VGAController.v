@@ -31,6 +31,8 @@ module VGAController(
     output [3:0] vgaRed,
     output [3:0] vgaBlue,
     output [3:0] vgaGreen,
+    output VBlank,
+    output HBlank,
     output [9:0] Hcount,
     output [9:0] Vcount
     );
@@ -49,6 +51,9 @@ module VGAController(
     
     
     EdgeDetector EdgeDetector (.btn(~Q1), .clkin(clk), .out(frame));
+    
+    assign VBlank = ~Q3;
+    assign HBlank = ~Q2;
     
     assign vgaRed[3] = RedIn[3] & Q2 & Q3;
     assign vgaRed[2] = RedIn[2] & Q2 & Q3;

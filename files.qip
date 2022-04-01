@@ -1,13 +1,9 @@
 set_global_assignment -name SDC_FILE SlugCross.sdc
 set_global_assignment -name SYSTEMVERILOG_FILE SlugCross.sv
 
-set_global_assignment -name VERILOG_FILE rtl/FDRE.v
-
 set_global_assignment -name VERILOG_FILE rtl/BGCollisionDetector.v
 set_global_assignment -name VERILOG_FILE rtl/BorderGenerator.v
 set_global_assignment -name VERILOG_FILE rtl/btnChecker.v
-set_global_assignment -name VERILOG_FILE rtl/countU3.v
-set_global_assignment -name VERILOG_FILE rtl/countU4.v
 set_global_assignment -name VERILOG_FILE rtl/countU5.v
 set_global_assignment -name VERILOG_FILE rtl/countU10.v
 set_global_assignment -name VERILOG_FILE rtl/countUD10L.v
@@ -27,8 +23,6 @@ set_global_assignment -name VERILOG_FILE rtl/H5.v
 set_global_assignment -name VERILOG_FILE rtl/H6.v
 set_global_assignment -name VERILOG_FILE rtl/H7.v
 
-set_global_assignment -name VERILOG_FILE rtl/hex7seg.v
-
 set_global_assignment -name VERILOG_FILE rtl/HorizGap1.v
 set_global_assignment -name VERILOG_FILE rtl/HorizGap2.v
 set_global_assignment -name VERILOG_FILE rtl/HorizGap3.v
@@ -42,15 +36,11 @@ set_global_assignment -name VERILOG_FILE rtl/HorizontalGaps.v
 set_global_assignment -name VERILOG_FILE rtl/HorizontalObstacles.v
 set_global_assignment -name VERILOG_FILE rtl/LossDetector.v
 set_global_assignment -name VERILOG_FILE rtl/qsecTicker.v
-set_global_assignment -name VERILOG_FILE rtl/RingCounter.v
-set_global_assignment -name VERILOG_FILE rtl/secondTicker.v
-set_global_assignment -name VERILOG_FILE rtl/Selector.v
 set_global_assignment -name VERILOG_FILE rtl/SlugGenerator.v
 set_global_assignment -name VERILOG_FILE rtl/SlugHorizontalComponent.v
 set_global_assignment -name VERILOG_FILE rtl/SlugPositionSet.v
 set_global_assignment -name VERILOG_FILE rtl/SlugRedDetect.v
 set_global_assignment -name VERILOG_FILE rtl/SlugVerticalComponent.v
-set_global_assignment -name VERILOG_FILE rtl/Timer.v
 set_global_assignment -name VERILOG_FILE rtl/TopLevel.v
 set_global_assignment -name VERILOG_FILE rtl/TopStateMachine.v
 set_global_assignment -name VERILOG_FILE rtl/TopStateMachineLogic.v
@@ -76,3 +66,17 @@ set_global_assignment -name VERILOG_FILE rtl/VerticalGaps.v
 set_global_assignment -name VERILOG_FILE rtl/VerticalObstacles.v
 set_global_assignment -name VERILOG_FILE rtl/VGAController.v
 set_global_assignment -name VERILOG_FILE rtl/WinDetector.v
+
+
+set_global_assignment -name VERILOG_FILE rtl/libs/countU3.v
+set_global_assignment -name VERILOG_FILE rtl/libs/countU4.v
+set_global_assignment -name VERILOG_FILE rtl/libs/countUD5L.v
+set_global_assignment -name VERILOG_FILE rtl/libs/EdgeDetector.v
+set_global_assignment -name VERILOG_FILE rtl/libs/hex7seg.v
+#set_global_assignment -name VERILOG_FILE rtl/libs/lab7_clks.v
+set_global_assignment -name VERILOG_FILE rtl/libs/m8_1e.v
+set_global_assignment -name VERILOG_FILE rtl/libs/mux2to1.v
+set_global_assignment -name VERILOG_FILE rtl/libs/RingCounter.v
+set_global_assignment -name VERILOG_FILE rtl/libs/secondTicker.v
+set_global_assignment -name VERILOG_FILE rtl/libs/Selector.v
+set_global_assignment -name VERILOG_FILE rtl/libs/Timer.v

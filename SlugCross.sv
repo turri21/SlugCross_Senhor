@@ -204,10 +204,10 @@ assign VIDEO_ARY = (!ar) ? 12'd3 : 12'd0;
 localparam CONF_STR = {
 	"SlugCross;;",
 	"-;",
-	"O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
+	"O23,Difficulty,0,1,2,3;",
 	"-;",
-	"R0,Reset;",
-	"J1,Button;",
+	"O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
+	"J1,C;",
 	"jn,A;",
 	"jp,A;",
 	"V,v",`BUILD_DATE 
@@ -216,7 +216,7 @@ localparam CONF_STR = {
 wire [21:0] gamma_bus;
 
 wire  [2:0] buttons;
-wire [15:0] joy;
+wire [15:0] joyA;
 wire [63:0] status;
 
 
@@ -230,7 +230,7 @@ hps_io #(.CONF_STR(CONF_STR)) hps_io
 	.buttons(buttons),
 	.status(status),
 
-	.joystick_0(joy),
+	.joystick_0(joyA)
 
 );
 
@@ -241,43 +241,67 @@ pll pll
 (
 	.refclk(CLK_50M),
 	.rst(0),
-	.outclk_0(clk_sys)
+	.outclk_0(clk_sys),
 );
 
 wire reset = RESET | status[0] | buttons[1];
 
 //////////////////////////////////////////////////////////////////
 
-wire joy_right = joy[0];
-wire joy_left = joy[1];
-wire joy_down = joy[2];
-wire joy_up = joy[3];
-wire joy_btn = joy[4];
-
 wire [1:0] col = status[4:3];
 
-wire vsync, hsync;
+wire vsync, hsync, VBlank, HBlank;
+wire [3:0] red;
+wire [3:0] blue;
+wire [3:0] green;
 
 TopLevel TopLevel
 (
-	.clkin(clk_sys),
-	.btnU(joy_up),
-	.btnD(joy_down),
-	.btnL(joy_left),
-	.btnR(joy_right),
-	.btnC(joy_btn),
-	.sw(),
+	.clkin(clk_vid),
+	.clk (clk_sys),
+	.btnU(joyA[3]),
+	.btnD(joyA[2]),
+	.btnL(joyA[1]),
+	.btnR(joyA[0]),
+	.btnC(joyA[4]),
+	.sw({~status[3:2], 3'd0, reset}),
 	.Hsync(VGA_HS),
 	.Vsync(VGA_VS),
-	.vgaRed(VGA_R),
-	.vgaBlue(VGA_B),
-	.vgaGreen(VGA_G),
+	.VBlank(VBlank),
+	.HBlank(HBlank),
+	.vgaRed(red),
+	.vgaBlue(blue),
+	.vgaGreen(green),
 	.seg(),
 	.dp(),
 	.an()
 );
 
+assign VGA_R = {red, red};
+assign VGA_B = {blue, blue};
+assign VGA_G = {green, green};
+assign VGA_DE = ~(HBlank | VBlank);
+
 assign CLK_VIDEO = clk_sys;
 assign CE_PIXEL = 1;
+
+reg  [26:0] act_cnt;
+always @(posedge clk_sys) act_cnt <= act_cnt + 1'd1; 
+assign LED_USER    = act_cnt[26]  ? act_cnt[25:18]  > act_cnt[7:0]  : act_cnt[25:18]  <= act_cnt[7:0];
+
+endmodule
+
+module lab7_clks(
+	input clkin,
+	input greset,
+	output clk,
+	output digsel,
+	output fastclk
+);
+
+assign clk = clkin;
+assign fastclk = clkin;
+assign digsel = clk;
+
 
 endmodule
