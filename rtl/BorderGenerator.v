@@ -33,7 +33,7 @@ module BorderGenerator(
     wire [9:0] SecOut;
     
     EdgeDetector SecEdge (.btn(sec), .clkin(clk), .out(secEdge));
-    countU10 secGenerator(.clk(clk), .Up(secEdge), .Q(secOut));
+    countU10 secGenerator(.clk(clk), .Up(secEdge), .Q(SecOut));
     FlashModule FlashModule (.flash(flash), .sec(SecOut[0]), .flashOut(flashOut));  
     
     assign Blue[3] = ((~Hcount[9] & ~Hcount[8] & ~Hcount[7] & ~Hcount[6] & ~Hcount[5] & ~Hcount[4] & ~Hcount[3]) |

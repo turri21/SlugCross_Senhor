@@ -79,7 +79,7 @@ module TopLevel(
 
     Timer Timer (.clk(clk), .frame(frame), .CE(TimerEnable), .reset(resetTimer), .Q(timerOut[15:0]));
     
-    RingCounter RingCounter(.advance(digsel), .clkin(clk), .Q(selInput));
+    RingCounter RingCounter(.advance(digsel), .clkin(clk), .reset(0), .Q(selInput));
     Selector Selector(.sel(selInput), .N(timerOut[15:0]), .H(segInput));
     hex7seg hex7seg(.n(segInput), .e(1'b1), .seg(seg));                         
  

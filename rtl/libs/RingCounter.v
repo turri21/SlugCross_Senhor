@@ -23,6 +23,7 @@
 module RingCounter(
     input advance,
     input clkin,
+    input reset,
     output [3:0] Q
     );
     

@@ -40,7 +40,7 @@ module SlugGenerator(
     wire [9:0] SecOut;
     
     EdgeDetector SecEdge (.btn(sec), .clkin(clk), .out(secEdge));
-    countU10 secGenerator(.clk(clk), .Up(secEdge), .Q(secOut));
+    countU10 secGenerator(.clk(clk), .Up(secEdge), .Q(SecOut));
     FlashModule FlashModule (.flash(flash), .sec(SecOut[0]), .flashOut(flashOut));    
 
     SlugPositionSet SlugPositionSet (.Hcount(Hcount[9:0]), .GreenHoriz(GreenHoriz), .load(load));
