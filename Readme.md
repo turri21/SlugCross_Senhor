@@ -1,3 +1,8 @@
+-=(SlugCross_Senhor notes)=-
+
+Tested: Working Video 720p, 1080p.
+
+___
 # [Slug Cross](https://github.com/bhayame/Slug-Cross-FPGA) for [MiSTer FPGA](https://mister-devel.github.io/MkDocs_MiSTer/)
 
 Original core by bhayame
